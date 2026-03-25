@@ -1,0 +1,38 @@
+{
+  "name": "Geofence API",
+  "version": "2.0.0",
+  "description": "API de gestion de géofences pour le suivi de véhicules",
+  "title": "Geofence Management API",
+  "url": "http://localhost:8080/api",
+  "sampleUrl": "http://localhost:8080/api",
+  "defaultVersion": "2.0.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2025-01-08T10:00:00.000Z",
+    "url": "http://apidocjs.com",
+    "version": "0.29.0"
+  },
+  "order": [
+    "Authentication",
+    "Vehicles",
+    "Geofences",
+    "Routes",
+    "Route Monitoring",
+    "Geofence Sharing",
+    "Invite Links",
+    "Geofence Fork",
+    "Alerts",
+    "Statistics",
+    "Dashboard",
+    "Documentation",
+    "User Management"
+  ],
+  "header": {
+    "title": "Getting Started",
+    "filename": "header.md"
+  },
+  "footer": {
+    "title": "Additional Information",
+    "filename": "footer.md"
+  }
+}

@@ -1,0 +1,49 @@
+# .dockerignore
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+
+# Environment (sera copié explicitement si nécessaire)
+.env*
+!.env.docker
+
+# Tests
+src/test/
+
+# Temporary files
+tmp/
+temp/
+
+# Node modules (si présent)
+node_modules/
+
+# Backup files
+*.bak
+*.backup

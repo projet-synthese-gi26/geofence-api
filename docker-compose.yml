@@ -1,0 +1,84 @@
+# docker-compose.yml -- Développement local
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: geofence-postgres
+    environment:
+      POSTGRES_DB: geofence_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+    networks:
+      - geofence-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d geofence_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: geofence-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - geofence-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geofence-api
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/geofence_db
+      DB_USERNAME: ${DB_USERNAME:-geofence_app}
+      DB_PASSWORD: ${DB_PASSWORD:-app_password}
+      DB_LIQUIBASE_USERNAME: ${DB_LIQUIBASE_USERNAME:-geofence_liquibase}
+      DB_LIQUIBASE_PASSWORD: ${DB_LIQUIBASE_PASSWORD:-liquibase_password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY:-608f36e92dc66d97d5933f0e6371893cb4fc05b3aa8f8de64014732472303a7c}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      UPLOAD_DIR: /app/uploads
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - geofence-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  uploads_data:
+    driver: local
+
+networks:
+  geofence-network:
+    driver: bridge

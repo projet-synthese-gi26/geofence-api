@@ -1,0 +1,20 @@
+services:
+  # SERVER: CONFIG SERVER -----------------------------------------------------------
+  geofence-service:
+    image: ${IMAGE_TAG}
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - DB_URL=${POSTGRES_GEOFENCE_URL}
+      - DB_USERNAME=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - target: 8080
+        published: ${GEOFENCE_SERVICE_PORT}
+        protocol: tcp
+        mode: host
+    networks:
+      - openia-main-network
+
+networks:
+  openia-main-network:
+    external: true
