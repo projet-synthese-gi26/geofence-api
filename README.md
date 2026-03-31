@@ -1,6 +1,6 @@
 # 🌍 Geofence API
 
-Un système complet de géofencing en temps réel pour le suivi et la gestion de véhicules avec zones géographiques personnalisables.
+Un système complet de géofencing en temps réel pour le suivi et la gestion de véhicules avec zones géographiques personnalisables. bbbb
 
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.3-green)
